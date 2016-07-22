@@ -2,4 +2,4 @@ install:
   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 
 script:
-- ./run 'docker build -t envoi/docker-bitlbee . && docker run envoi/docker-bitlbee echo Build succeed'
+- ./run 'docker build -t envoi/docker-znc_bitlbee . && docker run envoi/docker-znc_bitlbee echo Build succeed'
