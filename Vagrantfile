@@ -3,16 +3,15 @@
 
 BOX_NAME = ENV['BOX_NAME'] || "ubuntu"
 BOX_URI = ENV['BOX_URI'] || "http://files.vagrantup.com/precise64.box"
-VF_BOX_URI = ENV['BOX_URI'] || "http://files.vagrantup.com/precise64_vmware_fusion.box"
+VF_BOX_URI = ENV['BOX_URI'] || "http://files.vagrantup.com/precise64_vmware.box"
 AWS_BOX_URI = ENV['BOX_URI'] || "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-AWS_REGION = ENV['AWS_REGION'] || "us-east-1"
-AWS_AMI = ENV['AWS_AMI'] || "ami-69f5a900"
+AWS_REGION = ENV['AWS_REGION'] || "eu-west-1"
+AWS_AMI = ENV['AWS_AMI'] || "ami-5a60c229"
 AWS_INSTANCE_TYPE = ENV['AWS_INSTANCE_TYPE'] || 't1.micro'
 AWS_SECURITY_GROUP = ENV['AWS_SECURITY_GROUP']
 AWS_SSH_PRIVKEY_PATH = ENV['AWS_SSH_PRIVKEY_PATH']
 
 FORWARD_DOCKER_PORTS = ENV['FORWARD_DOCKER_PORTS']
-
 SSH_PRIVKEY_PATH = ENV["SSH_PRIVKEY_PATH"]
 
 Vagrant.configure("2") do |config|
@@ -51,6 +50,6 @@ END
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     override.vm.network :forwarded_port, :host => 4243, :guest => 4243
-    override.vm.network :forwarded_port, :host => 6668, :guest => 6668
+    override.vm.network :forwarded_port, :host => 26668, :guest => 26668
   end
 end

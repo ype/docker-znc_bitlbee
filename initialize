@@ -2,14 +2,13 @@
 
 set -e
 
-mkdir -p /etc/state/{bitlbee,znc}
+mkdir -p "$PWD"/etc/state/{bitlbee,znc}
 
 ZNC_USER=$1
 ZNC_PASS=$2
-CAMPFIRE_PASS=$3
 BITLBEE_PASS=$4
 
-ZNC_ROOT="/etc/state/znc"
+ZNC_ROOT="$PWD/etc/state/znc"
 CONFIG_FILE=${ZNC_ROOT}/configs/znc.conf
 
 if [ ! -d ${ZNC_ROOT}/configs ]; then
@@ -24,7 +23,7 @@ fi;
 if [ ! -e $CONFIG_FILE ]; then
 
 if [ $# -lt 4 ]; then
-    echo "Usage: $0 <USER> <PASSWORD> <CAMPFIRE> <BITLBEE>"
+    echo "Usage: $0 <USER> <PASSWORD> <BITLBEE>"
     exit 1
 fi;
 
@@ -34,7 +33,7 @@ ZNC_HASH="$(echo -n ${ZNC_PASS}${ZNC_SALT} | sha256sum | awk '{print $1}')"
 cat<<EOF > ${CONFIG_FILE}
 AnonIPLimit = 10
 ConnectDelay = 5
-LoadModule = palaver
+LoadModule = webadmin
 MaxBufferSize = 500
 ProtectWebSessions = true
 SSLCertFile = /znc/state/znc.pem
@@ -46,7 +45,7 @@ Version = 1.0
   AllowWeb = true
   IPv4 = true
   IPv6 = true
-  Port = 6668
+  Port = 26668
   SSL = true
 </Listener>
 
@@ -77,17 +76,8 @@ Version = 1.0
     FloodRate = 1.00
     IRCConnectEnabled = true
     LoadModule = nickserv
-    Server = wright.freenode.net +7070
-    Server = hubbard.freenode.net +7070
-    Server = card.freenode.net +7070
-    Server = verne.freenode.net +7070
-  </Network>
-
-  <Network campfire>
-    FloodBurst = 4
-    FloodRate = 1.00
-    IRCConnectEnabled = true
-    Server = localhost 7778 ${CAMPFIRE_PASS}
+    Server = holmes.freenode.net +6667
+    Server = chat.freenode.net +6697
   </Network>
 
   <Network bitlbee>
@@ -95,7 +85,7 @@ Version = 1.0
     FloodRate = 1.00
     IRCConnectEnabled = true
     LoadModule = simple_away
-    Server = localhost 6667 ${BITLBEE_PASS}
+    Server = localhost 26667 ${BITLBEE_PASS}
 
     <Chan &bitlbee>
     </Chan>
@@ -111,7 +101,7 @@ EOF
 
 fi;
 
-BITLBEE_ROOT="/etc/state/bitlbee"
+BITLBEE_ROOT="$PWD/etc/state/bitlbee"
 
 if [ ! -d ${BITLBEE_ROOT}/configs ]; then
     mkdir -p ${BITLBEE_ROOT}/configs
@@ -128,11 +118,10 @@ cat<<EOF > ${BITLBEE_ROOT}/configs/bitlbee.conf
 AuthMode = Closed
 AuthPassword = $BITLBEE_PASS
 ConfigDir = /bitlbee/state/accounts
-DaemonPort = 6667
+DaemonPort = 26667
 EOF
 
 fi;
 
-sudo docker pull sprsquish/bitlbee
-sudo docker pull sprsquish/znc
-sudo docker pull sprsquish/camper-van
+sudo docker pull envoi/docker-bitlbee
+sudo docker pull envoi/docker-znc

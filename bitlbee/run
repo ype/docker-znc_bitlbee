@@ -27,7 +27,7 @@ User = bitlbee
 AuthMode = Closed
 AuthPassword = $PASS
 ConfigDir = /bitlbee/state/accounts
-DaemonPort = 6667
+DaemonPort = 26667
 EOF
 
 fi;

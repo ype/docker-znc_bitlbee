@@ -1,5 +1,5 @@
 FROM        ubuntu:12.04
-MAINTAINER  Jeff Smick <jeff@squishtech.com>
+MAINTAINER  Anton S. <anton@env.sh>
 
 RUN apt-get update
 RUN apt-get install -y libssl-dev
@@ -8,17 +8,14 @@ RUN apt-get install -y gettext
 RUN apt-get install -y g++
 RUN apt-get install -y make
 
-RUN curl http://znc.in/releases/znc-1.2.tar.gz > znc-1.2.tar.gz
-RUN tar zxf znc-1.2.tar.gz
-RUN cd znc-1.2 && ./configure
-RUN cd znc-1.2 && make
-RUN cd znc-1.2 && make install
+RUN curl http://znc.in/releases/znc-latest.tar.gz > znc-latest.tar.gz
+RUN tar zxf znc-latest.tar.gz
+RUN cd znc-latest && ./configure
+RUN cd znc-latest && make
+RUN cd znc-latest && make install
 
-RUN curl https://raw2.github.com/Palaver/znc-palaver/master/palaver.cpp > palaver.cpp
-RUN znc-buildmod palaver.cpp
-RUN cp palaver.so /usr/local/lib/znc/palaver.so
-
-RUN curl https://raw.github.com/kylef/znc-contrib/master/clientaway.cpp > clientaway.cpp
+RUN curl https://raw.github.com/kylef/znc-contrib/master/clientaway.cpp \
+    > clientaway.cpp
 RUN znc-buildmod clientaway.cpp
 RUN cp clientaway.so /usr/local/lib/znc/clientaway.so
 
